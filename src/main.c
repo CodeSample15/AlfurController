@@ -1,27 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "raylib.h"
-#include "raygui.h"
+#include "raylib.h" //installed
+#include "raygui.h" //lib/raygui
+
+#include "bluetooth.h"
+
+#define SCREEN_WIDTH 600
+#define SCREEN_HEIGHT 300
 
 int main(int argc, char** argv) {
-    InitWindow(400, 200, "Alfur Controller");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Alfur Controller");
     SetTargetFPS(60);
 
-    int showMessage=0;
+    if(check_for_ble_adapters())
+        return 1;
 
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
-        if(GuiButton((Rectangle){24, 24, 120, 30}, "#191#ShowMessage")) showMessage=1;
-
-        if(showMessage) {
-            int result = GuiMessageBox((Rectangle){85, 70, 250, 100},
-                "#191#Message Box", "This is a test", "Nice;Cool");
-
-            if(result >= 0) showMessage = 0; 
-        }
+        
 
         EndDrawing();
     }

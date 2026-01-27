@@ -4,7 +4,9 @@ PROJECT (AlfurController)
 
 add_compile_options(-Wall -Werror -DRAYGUI_IMPLEMENTATION)
 
-include_directories( include "lib/raygui/src" )
+find_package(simpleble REQUIRED CONFIG)
+
+include_directories( include "lib/raygui/src" "lib/simpleble/simplecble/include/simplecble")
 file( GLOB SOURCES "src/*.c" )
 
 add_executable( 
@@ -12,4 +14,4 @@ add_executable(
         ${SOURCES}
 )
 
-target_link_libraries(AlfurController -lraylib -lGL -lm -lpthread -ldl -lrt -lX11)
+target_link_libraries(AlfurController simpleble::simpleble -lraylib -lGL -lm -lpthread -ldl -lrt -lX11)

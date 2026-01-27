@@ -1,3 +1,6 @@
 [submodule "lib/raygui"]
 	path = lib/raygui
 	url = https://github.com/raysan5/raygui.git
+[submodule "lib/simpleble"]
+	path = lib/simpleble
+	url = https://github.com/simpleble/simpleble.git
