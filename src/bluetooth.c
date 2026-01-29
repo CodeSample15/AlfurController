@@ -12,6 +12,8 @@
 static simpleble_adapter_t _adapter;
 static pthread_t _scan_thread;
 
+static void* run_scan(void*); // will be ran as a new pthread when scanning for devices
+
 static void adapter_on_scan_start(simpleble_adapter_t adapter, void* userdata);
 static void adapter_on_scan_stop(simpleble_adapter_t adapter, void* userdata);
 static void adapter_on_scan_found(simpleble_adapter_t adapter, simpleble_peripheral_t peripheral, void* userdata);
@@ -50,15 +52,21 @@ int ble_init()
 
 void ble_start_scan()
 {
+    printf("BLE - Starting scan...\n");
+    pthread_join(_scan_thread, NULL); // block to make sure there isn't already a thread running
+    pthread_create(&_scan_thread, NULL, run_scan, NULL);
     printf("BLE - Scan started!\n");
+}
+
+void* run_scan(void*)
+{
     if(simpleble_adapter_scan_for(_adapter, 5000)==SIMPLEBLE_FAILURE) {
         printf("BLE - Scan failed!\n");
-        return;
+        return NULL;
     }
 
-    SLEEP_SEC(1);
-
-    printf("BLE - Scan ended!\n");
+    printf("BLE - Scan finished!\n");
+    return NULL;
 }
 
 //Callbacks pulled from the SimpleBLE example repo--------------------------------------------------
