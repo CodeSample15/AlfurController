@@ -3,6 +3,7 @@
 
 #include "simplecble/simpleble.h"
 
-int check_for_ble_adapters();
+int ble_init();
+void ble_start_scan();
 
 #endif
