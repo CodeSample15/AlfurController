@@ -40,6 +40,14 @@ int main(int argc, char** argv) {
                 GuiLabel(CENTERED_RECT(FULL_SCREEN_RECT, 200, 40, 0, -40), "Scanning...");
                 GuiProgressBar(CENTERED_RECT(FULL_SCREEN_RECT, 200, 40, 0, 0),
                                     "0%", "100%", &scanProgress, 0, BLE_SCAN_TIME);
+                     
+                //cancel button for windows only, sorry (stopping threads in Linux apparently is broken)
+                #if _WIN32
+                if(GuiButton(CENTERED_RECT(FULL_SCREEN_RECT, 100, 40, 0, 40), "Stop")) {
+                    isScanning = 0;
+                    ble_stop_scan();
+                }
+                #endif
 
                 scanProgress += 1 / ((float)FPS / 1000);
                 if(scanProgress >= BLE_SCAN_TIME) isScanning = 0;
@@ -49,7 +57,6 @@ int main(int argc, char** argv) {
         EndDrawing();
     }
 
-    ble_stop_scan(); //join scan thread just in case
     CloseWindow();
     return 0;
 }
