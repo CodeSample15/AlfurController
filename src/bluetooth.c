@@ -58,9 +58,17 @@ void ble_start_scan()
     printf("BLE - Scan started!\n");
 }
 
+void ble_stop_scan() 
+{
+    printf("BLE - Stopping scan...\n");
+    pthread_cancel(_scan_thread);
+    pthread_join(_scan_thread, NULL);
+    printf("BLE - Scan stopped");
+}
+
 void* run_scan(void*)
 {
-    if(simpleble_adapter_scan_for(_adapter, 5000)==SIMPLEBLE_FAILURE) {
+    if(simpleble_adapter_scan_for(_adapter, BLE_SCAN_TIME)==SIMPLEBLE_FAILURE) {
         printf("BLE - Scan failed!\n");
         return NULL;
     }
